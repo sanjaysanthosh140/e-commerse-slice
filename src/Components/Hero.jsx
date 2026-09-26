@@ -168,14 +168,19 @@ const Hero = ({ selectedCategory, searchFilters = {} }) => {
     };
   });
 
-  const variantCards = products.flatMap((product) =>
-    (product.variants || []).map((variant, index) => ({
-      id: variant._id || `${product._id}-${variant.sku}-${index}`,
-      name: variant.sku || product.title,
-      price: formatPrice(variant.price),
-      image: variant.image || product.images?.[0] || "",
-    })),
-  );
+  const variantCards = products
+    .flatMap((product) =>
+      (product.variants || []).map((variant, index) => ({
+        id: variant._id || `${product._id}-${variant.sku}-${index}`,
+        productId: product._id,
+        name: variant.size
+          ? `${product.title} · ${variant.size}`
+          : product.title || variant.sku,
+        price: formatPrice(variant.price),
+        image: variant.image || product.images?.[0] || "",
+      })),
+    )
+    .slice(0, 12);
 
   const brandCards = [...new Set(products.map((p) => p.brand).filter(Boolean))]
     .slice(0, 3)
@@ -316,7 +321,13 @@ const Hero = ({ selectedCategory, searchFilters = {} }) => {
                 <div className="badge-discount">{item.discount}</div>
               )}
               <div className="product-image-box">
-                <img src={item.image} alt={item.name} />
+                {item.image ? (
+                  <img src={item.image} alt={item.name} loading="lazy" />
+                ) : (
+                  <span className="product-image-fallback">
+                    {item.name?.charAt(0) || "P"}
+                  </span>
+                )}
               </div>
               <div className="product-info">
                 <h3 className="product-title">{item.name}</h3>
@@ -341,12 +352,23 @@ const Hero = ({ selectedCategory, searchFilters = {} }) => {
 
           <div className="categories-flex">
             {variantCards.map((variant) => (
-              <div key={variant.id} className="category-item">
+              <button
+                key={variant.id}
+                type="button"
+                className="category-item"
+                onClick={() =>
+                  variant.productId && navigate(`/product/${variant.productId}`)
+                }
+              >
                 <div className="category-circle">
-                  <img src={variant.image} alt={variant.name} />
+                  {variant.image ? (
+                    <img src={variant.image} alt={variant.name} loading="lazy" />
+                  ) : (
+                    <span>{variant.name?.charAt(0) || "V"}</span>
+                  )}
                 </div>
                 <span className="category-name">{variant.name}</span>
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -369,7 +391,11 @@ const Hero = ({ selectedCategory, searchFilters = {} }) => {
                   <p className="brand-offer dark-text">{item.offer}</p>
                 </div>
                 <div className="brand-image">
-                  <img src={item.image} alt={item.brand} />
+                  {item.image ? (
+                    <img src={item.image} alt={item.brand} loading="lazy" />
+                  ) : (
+                    <span>{item.brand?.charAt(0) || "B"}</span>
+                  )}
                 </div>
               </div>
             ))}
@@ -392,7 +418,11 @@ const Hero = ({ selectedCategory, searchFilters = {} }) => {
                 className={`essential-card ${idx === 0 ? "active-border" : ""}`}
               >
                 <div className="essential-image-box">
-                  <img src={item.image} alt={item.name} />
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} loading="lazy" />
+                  ) : (
+                    <span>{item.name?.charAt(0) || "E"}</span>
+                  )}
                 </div>
                 <div className="essential-info">
                   <p className="essential-name">{item.name}</p>
