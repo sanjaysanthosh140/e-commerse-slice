@@ -14,17 +14,39 @@ const mapItems = (items = []) =>
     price: item.price,
     image: item.image,
     qty: item.quantity ?? item.qty ?? 1,
+    availableStock: item.availableStock,
+    availability: item.availability || "ok",
+    issue: item.issue || "",
+    lineTotal: item.lineTotal,
   }));
+
+const fromResponse = (data = {}) => ({
+  items: mapItems(data.items || data.cart?.items || []),
+  subtotal: Number(data.subtotal) || 0,
+  canCheckout: Boolean(data.canCheckout),
+  hasBlockingIssues: Boolean(data.hasBlockingIssues),
+  message: data.message,
+  cart: data.cart,
+  order: data.order,
+  failures: data.failures || [],
+});
 
 export const getCartCount = (items = []) =>
   items.reduce((sum, item) => sum + (item.qty || item.quantity || 0), 0);
 
-export const getCartTotal = (items = []) =>
-  items.reduce(
-    (sum, item) =>
-      sum + Number(item.price || 0) * Number(item.qty || item.quantity || 0),
-    0,
-  );
+/** Prefer server subtotal when present so totals always match backend. */
+export const getCartTotal = (items = [], serverSubtotal) => {
+  if (typeof serverSubtotal === "number" && !Number.isNaN(serverSubtotal)) {
+    return serverSubtotal;
+  }
+  return items
+    .filter((item) => !item.availability || item.availability === "ok")
+    .reduce(
+      (sum, item) =>
+        sum + Number(item.price || 0) * Number(item.qty || item.quantity || 0),
+      0,
+    );
+};
 
 const notifyCartUpdated = (items = []) => {
   window.dispatchEvent(
@@ -40,19 +62,22 @@ export const fetchCart = async () => {
       ok: false,
       needsAuth: true,
       items: [],
+      subtotal: 0,
+      canCheckout: false,
       message: "Please sign in",
     };
   }
 
   try {
     const res = await axios.get(CART_API, { headers: authHeaders() });
-    const items = mapItems(res.data.items || res.data.cart?.items || []);
-    return { ok: true, items, cart: res.data.cart };
+    return { ok: true, ...fromResponse(res.data) };
   } catch (error) {
     return {
       ok: false,
       needsAuth: error.response?.status === 401,
       items: [],
+      subtotal: 0,
+      canCheckout: false,
       message: error.response?.data?.message || "Failed to load cart",
     };
   }
@@ -75,15 +100,15 @@ export const addToCart = async ({ productId, variantId, qty = 1 }) => {
       { headers: authHeaders() },
     );
 
-    const items = mapItems(res.data.cart?.items || []);
-    notifyCartUpdated(items);
+    const payload = fromResponse(res.data);
+    notifyCartUpdated(payload.items);
 
     return {
       ok: true,
       alreadyAdded: Boolean(res.data.alreadyAdded),
       message: res.data.message || "Added to cart",
-      items,
       stock: res.data.stock,
+      ...payload,
     };
   } catch (error) {
     return {
@@ -109,22 +134,24 @@ export const updateCartQty = async (productId, variantId, action) => {
       { headers: authHeaders() },
     );
 
-    const items = mapItems(res.data.cart?.items || []);
-    notifyCartUpdated(items);
+    const payload = fromResponse(res.data);
+    notifyCartUpdated(payload.items);
 
     return {
       ok: true,
       message: res.data.message,
-      items,
       stock: res.data.stock,
       quantity: res.data.quantity,
+      ...payload,
     };
   } catch (error) {
     return {
       ok: false,
       outOfStock: Boolean(error.response?.data?.outOfStock),
       message: error.response?.data?.message || "Failed to update quantity",
-      items: mapItems(error.response?.data?.cart?.items || []),
+      items: mapItems(error.response?.data?.items || []),
+      subtotal: error.response?.data?.subtotal,
+      canCheckout: error.response?.data?.canCheckout,
     };
   }
 };
@@ -140,19 +167,50 @@ export const removeFromCart = async (productId, variantId) => {
       data: { productId, variantId },
     });
 
-    const items = mapItems(res.data.cart?.items || []);
-    notifyCartUpdated(items);
+    const payload = fromResponse(res.data);
+    notifyCartUpdated(payload.items);
 
     return {
       ok: true,
       message: res.data.message || "Removed",
-      items,
+      ...payload,
     };
   } catch (error) {
     return {
       ok: false,
       message: error.response?.data?.message || "Failed to remove item",
       items: [],
+    };
+  }
+};
+
+export const checkoutCart = async () => {
+  if (!getToken()) {
+    return { ok: false, needsAuth: true, message: "Please sign in" };
+  }
+
+  try {
+    const res = await axios.post(
+      `${CART_API}/checkout`,
+      {},
+      { headers: authHeaders() },
+    );
+
+    const payload = fromResponse(res.data);
+    notifyCartUpdated(payload.items);
+
+    return {
+      ok: true,
+      message: res.data.message || "Checkout successful",
+      ...payload,
+    };
+  } catch (error) {
+    const data = error.response?.data || {};
+    return {
+      ok: false,
+      status: error.response?.status,
+      message: data.message || "Checkout failed",
+      ...fromResponse(data),
     };
   }
 };
