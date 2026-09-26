@@ -1,0 +1,21 @@
+.signup-page {
+  background: linear-gradient(135deg, #eef9f4 0%, #ffffff 55%, #e4f4ef 100%);
+}
+
+.signup-page .auth-card {
+  border-top: 4px solid #0d9f78;
+}
+
+.signup-page .auth-submit {
+  background: #0d9f78;
+}
+
+.signup-page .auth-submit:hover {
+  background: #087d5f;
+}
+
+@media (max-width: 560px) {
+  .signup-page .auth-card {
+    border-top-width: 3px;
+  }
+}

@@ -1,0 +1,13 @@
+.login-page {
+  background: linear-gradient(135deg, #f0f8fc 0%, #ffffff 55%, #e5f5fb 100%);
+}
+
+.login-page .auth-card {
+  border-top: 4px solid #008ecc;
+}
+
+@media (max-width: 560px) {
+  .login-page .auth-card {
+    border-top-width: 3px;
+  }
+}

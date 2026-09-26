@@ -1,0 +1,707 @@
+/* Color & Variables */
+:root {
+  --primary-blue: #008ecc;
+  --bg-light-blue: #f0f8fc;
+  --text-dark: #222222;
+  --text-muted: #666666;
+  --text-light-gray: #888888;
+  --green-discount: #249b3e;
+  --border-light: #ececec;
+  --card-bg: #f8f9fa;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.hero-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 20px 30px 20px;
+}
+
+/* =========================================
+   1. HERO CAROUSEL BANNER
+   ========================================= */
+.hero-banner-section {
+  position: relative;
+  margin-bottom: 26px;
+  display: flex;
+  align-items: center;
+}
+
+.main-banner {
+  width: 100%;
+  height: 300px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 64px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 18px 40px rgba(16, 42, 67, 0.18);
+}
+
+.banner-animate {
+  animation: bannerFadeIn 0.55s ease;
+}
+
+@keyframes bannerFadeIn {
+  from {
+    opacity: 0.55;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.banner-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  right: 18%;
+  top: -40px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.theme-ocean {
+  background: linear-gradient(120deg, #0b2c3d 0%, #008ecc 55%, #35b7e8 100%);
+}
+
+.theme-fresh {
+  background: linear-gradient(120deg, #0f3d32 0%, #1f9d6a 50%, #57c79a 100%);
+}
+
+.theme-sunset {
+  background: linear-gradient(120deg, #4a1f14 0%, #d35400 48%, #f39c12 100%);
+}
+
+.theme-slate {
+  background: linear-gradient(120deg, #1a2332 0%, #2f4a63 55%, #5b7c99 100%);
+}
+
+.theme-mint {
+  background: linear-gradient(120deg, #12353a 0%, #0e8a8a 52%, #3ecfcf 100%);
+}
+
+.banner-content {
+  color: #ffffff;
+  z-index: 2;
+  max-width: 520px;
+}
+
+.banner-subtitle {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(6px);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+.banner-title {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  margin-bottom: 8px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.banner-desc {
+  margin: 0 0 12px;
+  max-width: 420px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.banner-offer {
+  display: inline-block;
+  margin-bottom: 22px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.banner-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-dots .dot {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.banner-dots .dot.active {
+  width: 28px;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.banner-image-wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.banner-image-wrapper img {
+  height: 240px;
+  width: 240px;
+  object-fit: contain;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 14px;
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.28));
+  animation: floatImage 3.4s ease-in-out infinite;
+}
+
+@keyframes floatImage {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.banner-image-fallback {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: 64px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.05);
+}
+
+.carousel-arrow.left {
+  left: -22px;
+}
+
+.carousel-arrow.right {
+  right: -22px;
+}
+
+.carousel-arrow svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--primary-blue);
+}
+
+/* =========================================
+   2. SECTION COMMON STYLES
+   ========================================= */
+.section-block {
+  margin-bottom: 26px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.section-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.section-header .highlight {
+  color: var(--primary-blue);
+  position: relative;
+}
+
+.section-header .highlight::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-blue);
+}
+
+.view-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.view-all svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--primary-blue);
+}
+
+/* =========================================
+   3. SMARTPHONES PRODUCTS GRID
+   ========================================= */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.hero-status {
+  margin-bottom: 14px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.hero-status-error {
+  color: #b5472a;
+}
+
+.product-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  padding: 0;
+}
+
+.product-card:hover {
+  border-color: var(--primary-blue);
+  box-shadow: 0 6px 16px rgba(0, 142, 204, 0.12);
+}
+
+.product-card.active-border {
+  border: 1.5px solid var(--primary-blue);
+  box-shadow: 0 6px 16px rgba(0, 142, 204, 0.12);
+}
+
+.badge-discount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 6px 8px;
+  border-bottom-left-radius: 10px;
+}
+
+.product-image-box {
+  background-color: var(--card-bg);
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.product-image-box img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.product-info {
+  padding: 12px 14px 14px 14px;
+  border-top: 1px solid #f2f2f2;
+}
+
+.product-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.current-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.original-price {
+  font-size: 12px;
+  color: var(--text-light-gray);
+  text-decoration: line-through;
+}
+
+.save-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green-discount);
+}
+
+/* =========================================
+   4. TOP CATEGORIES CIRCLES
+   ========================================= */
+.categories-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.category-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border: 1px solid var(--border-light);
+  transition: all 0.2s ease;
+}
+
+.category-circle.active {
+  border: 1.5px solid var(--primary-blue);
+  box-shadow: 0 4px 12px rgba(0, 142, 204, 0.15);
+}
+
+.category-circle img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.category-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* =========================================
+   5. TOP ELECTRONICS BRANDS
+   ========================================= */
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.brand-card {
+  height: 160px;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+}
+
+.dark-card {
+  background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 100%);
+  color: #ffffff;
+}
+
+.yellow-card {
+  background: linear-gradient(135deg, #fff3cf 0%, #ffe8a3 100%);
+}
+
+.orange-card {
+  background: linear-gradient(135deg, #ffe2d1 0%, #ffd0b8 100%);
+}
+
+.brand-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  z-index: 2;
+}
+
+.brand-chip {
+  background-color: rgba(255, 255, 255, 0.15);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.brand-chip.light {
+  background-color: rgba(0, 0, 0, 0.06);
+  color: #555555;
+}
+
+.brand-logo svg {
+  width: 28px;
+  height: 28px;
+}
+
+.brand-badge {
+  font-weight: 800;
+  font-size: 16px;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+.yellow-badge {
+  background-color: #ffc915;
+  color: #000000;
+}
+
+.orange-badge {
+  background-color: #ff6700;
+  color: #ffffff;
+}
+
+.brand-offer {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dark-text {
+  color: #222222;
+}
+
+.brand-image {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.brand-image img {
+  height: 130px;
+  object-fit: contain;
+}
+
+.brands-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.small-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #d1d1d1;
+}
+
+.small-dot.active {
+  width: 18px;
+  border-radius: 10px;
+  background-color: var(--primary-blue);
+}
+
+/* =========================================
+   6. DAILY ESSENTIALS GRID
+   ========================================= */
+.essentials-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.essential-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.essential-card.active-border {
+  border: 1.5px solid var(--primary-blue);
+  box-shadow: 0 6px 16px rgba(0, 142, 204, 0.12);
+}
+
+.essential-image-box {
+  width: 100%;
+  height: 110px;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 8px;
+}
+
+.essential-image-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.essential-info .essential-name {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.essential-info .essential-offer {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* =========================================
+   7. RESPONSIVE BREAKPOINTS
+   ========================================= */
+@media (max-width: 1200px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .essentials-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .main-banner {
+    height: 240px;
+    padding: 0 30px;
+  }
+  .banner-title {
+    font-size: 28px;
+  }
+  .banner-image-wrapper img {
+    width: 170px;
+    height: 170px;
+  }
+  .brands-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .essentials-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .carousel-arrow {
+    display: none;
+  }
+  .main-banner {
+    padding: 28px 20px;
+    height: auto;
+    min-height: 320px;
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  .banner-content {
+    max-width: 100%;
+  }
+  .banner-desc {
+    max-width: 100%;
+  }
+  .banner-image-wrapper img {
+    width: 140px;
+    height: 140px;
+  }
+  .banner-dots {
+    justify-content: center;
+  }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .essentials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
